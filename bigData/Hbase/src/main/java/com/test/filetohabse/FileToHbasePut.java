@@ -24,7 +24,7 @@ import com.test.util.HbaseUtil;
 
 /**
  * 通过读取文件直接放入Hbase 中
- * @author Chris
+ * @author lilin
  *
  */
 public class FileToHbasePut extends  Thread {
