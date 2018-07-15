@@ -68,7 +68,7 @@ public class Consumer extends Thread {
 		try {
 			while (true) {
 				line = b.poll();//返回并移除
-				if (count >100000) {
+				if (b.isEmpty()) {//如果队列为空则停止线程
 					break;
 				}
 				if (line != null && !line.equals("")) {
@@ -109,7 +109,7 @@ public class Consumer extends Thread {
 					count++;
 				}
 			}
-			System.err.println("耗时" + (System.currentTimeMillis() - beginTime) / 1000 + "秒");
+			System.err.println(Thread.currentThread().getName()+"耗时" + (System.currentTimeMillis() - beginTime) / 1000 + "秒");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {

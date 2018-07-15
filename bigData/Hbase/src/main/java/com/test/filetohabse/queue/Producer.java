@@ -65,21 +65,6 @@ public class Producer extends Thread {
 			reader=new BufferedReader(m);//读取文件
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			if(m!=null){
-				try {
-					m.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			if(reader!=null){
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 }
