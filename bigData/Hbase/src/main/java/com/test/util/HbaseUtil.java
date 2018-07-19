@@ -3,6 +3,7 @@ package com.test.util;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.UUID;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
@@ -190,5 +191,39 @@ public class HbaseUtil {
 			i++;
 		}
 		return splitKeys;
+	}
+    /**
+     * 这里RowKey的命名规则是两位随机数加+UUID
+     * @return
+     */
+    public static  byte[][] getSplitKeysByRandom() {  
+        String[] keys = new String[] { "10|", "20|", "30|", "40|", "50|",  
+                "60|", "70|", "80|", "90|" };  
+        byte[][] splitKeys = new byte[keys.length][];  
+        TreeSet<byte[]> rows = new TreeSet<byte[]>(Bytes.BYTES_COMPARATOR);//升序排序  
+        for (int i = 0; i < keys.length; i++) {  
+            rows.add(Bytes.toBytes(keys[i]));  
+        }  
+        Iterator<byte[]> rowKeyIter = rows.iterator();  
+        int i=0;  
+        while (rowKeyIter.hasNext()) {  
+            byte[] tempRow = rowKeyIter.next();  
+            rowKeyIter.remove();  
+            splitKeys[i] = tempRow;  
+            i++;  
+        }  
+        return splitKeys;  
+    }
+    /**
+     * 获取两位随机数
+     * @return
+     */
+    public static String getRandomNumber(){  
+        String ranStr = Math.random()+"";  
+        int pointIndex = ranStr.indexOf(".");  
+        return ranStr.substring(pointIndex+1, pointIndex+3);  
+    } 
+    public static void main(String[] args) {
+		System.err.println(UUID.randomUUID().toString().replaceAll("-",""));
 	}
 }

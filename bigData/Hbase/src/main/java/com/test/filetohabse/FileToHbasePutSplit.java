@@ -59,7 +59,7 @@ public class FileToHbasePutSplit extends Thread {
 		// 执行初始化
 		setUp();
 		//System.setProperty("HADOOP_USER_NAME", "root");
-		FileToHbasePutSplit fileToHbasePut = new FileToHbasePutSplit("", "test", new String[] { "info" }, 0, 4000);
+		FileToHbasePutSplit fileToHbasePut = new FileToHbasePutSplit("", "test", new String[] { "info" }, 0, 40000);
 		fileToHbasePut.start();
 		FileToHbasePutSplit fileToHbasePut1 = new FileToHbasePutSplit("", "test", new String[] { "info" }, 40000,8000);
 		fileToHbasePut1.start();
@@ -81,7 +81,6 @@ public class FileToHbasePutSplit extends Thread {
 			String workPlace = "";
 			// rowkey
 			String rowKey = "";
-			String uuid;
 			System.err.println("第一条数据信息是：" + fileList.get(start));
 			for (int j = start; j < end; j++) {
 				String line = String.valueOf(fileList.get(j));

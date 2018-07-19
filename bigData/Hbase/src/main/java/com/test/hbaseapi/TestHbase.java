@@ -3,6 +3,7 @@ package com.test.hbaseapi;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
@@ -24,6 +25,8 @@ import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.client.TableDescriptorBuilder;
 import org.apache.hadoop.hbase.util.Bytes;
+
+import com.test.util.HbaseUtil;
 /**
  * 这里使用的Api 都是Hbase2.0的新版Api(老的API 可以参考文档)
  * @author lilin
@@ -35,7 +38,7 @@ public class TestHbase  {
 
 	public static void main(String[] args)  throws Exception{
           //System.err.println(isExits("test"));
-		 createTbale("test",new String[]{"info"});
+		createTbale("test",new String[]{"info"});
 		 //addRowData("test","1","info","age","10");
 		// getRow("test","1");
 		 //getAllData("test");
@@ -73,9 +76,9 @@ public class TestHbase  {
 			columnFamilyDescriptor=ColumnFamilyDescriptorBuilder.newBuilder(Bytes.toBytes(cf)).build();
 			hTableDescriptor.setColumnFamily(columnFamilyDescriptor);
 		}
-		admin.createTable(hTableDescriptor.build());//创建表
+		admin.createTable(hTableDescriptor.build(),HbaseUtil.getSplitKeysByRandom());//创建表
 		System.err.println("创建成功");
-		System.exit(0);//0  带表正常退出  非零代表非正常退出
+		//System.exit(0);//0  带表正常退出  非零代表非正常退出
 	}
 	/**
 	 * 表中插入数据
