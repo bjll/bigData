@@ -9,12 +9,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import javax.ws.rs.PUT;
-
+import org.apache.hadoop.hbase.client.Durability;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 
-import com.sun.tools.extcheck.Main;
 import com.test.util.HbaseUtil;
 
 /**
@@ -25,7 +23,7 @@ import com.test.util.HbaseUtil;
  */
 public class Producer extends Thread {
 	// 生产队列
-	private LinkedBlockingQueue b;
+	private LinkedBlockingQueue<List<Put>> b;
 	// 文件读取
 	private FileReader m;
     //文件缓存
@@ -45,7 +43,10 @@ public class Producer extends Thread {
 	private String workPlace = "";
 	//RowKey
 	String rowKey="";
-	public Producer(LinkedBlockingQueue b) {
+	List<Put> listPuts=new ArrayList<Put>();
+	
+	List<Put> tempList=new ArrayList<Put>();
+	public Producer(LinkedBlockingQueue<List<Put>> b) {
 		init();
 		this.b = b;
 	}
@@ -59,6 +60,10 @@ public class Producer extends Thread {
 			while (true) {
 				line = reader.readLine();
 				if (line == null || "".equals(line)) {
+					tempList.clear();
+					tempList.addAll(listPuts);
+					b.put(tempList);
+					listPuts.clear();
 					break;
 				}
 				String[] infoArr = line.toString().split("\t");
@@ -92,9 +97,15 @@ public class Producer extends Thread {
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("companyName"), Bytes.toBytes(companyName));
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("salary"), Bytes.toBytes(salary));
 				put.addColumn(Bytes.toBytes("info"), Bytes.toBytes("workPlace"), Bytes.toBytes(workPlace));
-				
-				b.put(put);
-				
+				//put.setDurability(Durability.ASYNC_WAL);//异步进行写入
+				listPuts.add(put);
+				count ++;
+				if(count%5000==0){
+					tempList.clear();
+					tempList.addAll(listPuts);
+					b.put(tempList);
+					listPuts.clear();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

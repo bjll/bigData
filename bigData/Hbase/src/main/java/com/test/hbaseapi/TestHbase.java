@@ -26,6 +26,7 @@ import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.client.TableDescriptorBuilder;
 import org.apache.hadoop.hbase.util.Bytes;
 
+import com.sun.tools.classfile.StackMap_attribute.stack_map_frame;
 import com.test.util.HbaseUtil;
 /**
  * 这里使用的Api 都是Hbase2.0的新版Api(老的API 可以参考文档)
@@ -38,7 +39,7 @@ public class TestHbase  {
 
 	public static void main(String[] args)  throws Exception{
           //System.err.println(isExits("test"));
-		createTbale("test",new String[]{"info"});
+		  //createTbale("test",new String[]{"info"});
 		 //addRowData("test","1","info","age","10");
 		// getRow("test","1");
 		 //getAllData("test");
@@ -78,7 +79,7 @@ public class TestHbase  {
 		}
 		admin.createTable(hTableDescriptor.build(),HbaseUtil.getSplitKeysByRandom());//创建表
 		System.err.println("创建成功");
-		//System.exit(0);//0  带表正常退出  非零代表非正常退出
+		System.exit(0);//0  带表正常退出  非零代表非正常退出
 	}
 	/**
 	 * 表中插入数据

@@ -1,5 +1,6 @@
 package com.test.filetohabse.queue;
 
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.hadoop.hbase.client.Put;
@@ -17,7 +18,7 @@ import org.apache.hadoop.hbase.client.Put;
 public class QueueTest {
 
 	public static void main(String[] args) {
-	   LinkedBlockingQueue<Put>  linkedBlockingQueue = new LinkedBlockingQueue<Put>();//定义一个队列
+	   LinkedBlockingQueue<List<Put>>  linkedBlockingQueue = new LinkedBlockingQueue<List<Put>>();//定义一个队列
 	   new Producer(linkedBlockingQueue).start();//启动生产者
 	   new Consumer(linkedBlockingQueue,"test").start();//起动消费者
    }
