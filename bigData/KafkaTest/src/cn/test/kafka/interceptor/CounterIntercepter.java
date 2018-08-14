@@ -24,6 +24,10 @@ public class CounterIntercepter  implements ProducerInterceptor<String, String>{
 	@Override
 	public void onAcknowledgement(RecordMetadata metadata, Exception exception) {
 		 if(exception==null){
+			 if(metadata!=null&&"test".equals(metadata.topic())&&metadata.partition()==0){
+				 //在主题名称为test 并且分区为 1 的数据进行处理
+				 System.err.println("doSomeThing");
+			 }
 			 metadata.offset();//这里可以通过API 去一些数据
 			successCount++; 
 		 }else{
@@ -31,7 +35,9 @@ public class CounterIntercepter  implements ProducerInterceptor<String, String>{
 		 }
 		
 	}
-
+   /**
+    *这个方法是进行消息过滤的操作
+    */
 	@Override
 	public ProducerRecord<String, String> onSend(ProducerRecord<String, String> record) {
 		//对数据不做处理  返回原有的数据

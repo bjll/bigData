@@ -35,6 +35,7 @@ public class CustomProducer {
 		List <String> list=new ArrayList<String>();
 		list.add("cn.test.kafka.interceptor.TimeInterceptor");
 		list.add("cn.test.kafka.interceptor.CounterIntercepter");
+		producer.partitionsFor("");//获取指定topic中元数据的信息  参数是 topic 的名称
 		props.put(org.apache.kafka.clients.producer.ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, list);
 		//3.---------------发送消息 ---------------------------
 		for (int i = 0; i < 50; i++) {
@@ -45,7 +46,6 @@ public class CustomProducer {
 			//如果future调用get()，则将阻塞，直到相关请求完成并返回该消息的metadata，或抛出发送异常
 			producer.send(new ProducerRecord<String, String>("first", Integer.toString(i), "hello world-" + i));
 		}
-
 		producer.close();
 	}
 }

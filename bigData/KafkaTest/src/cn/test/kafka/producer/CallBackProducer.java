@@ -6,6 +6,8 @@ import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.clients.producer.internals.BufferPool;
+import org.apache.kafka.clients.producer.internals.RecordAccumulator;
 
 public class CallBackProducer {
 
@@ -31,9 +33,10 @@ public class CallBackProducer {
 //		props.put("partitioner.class", "com.atguigu.kafka.CustomPartitioner");
 
 		KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(props);
-
+		
 		for (int i = 0; i < 50; i++) {
 			Thread.sleep(500);
+			//第二个参数是 消息回调函数 每一个消息都会有回调函数
 			kafkaProducer.send(new ProducerRecord<String, String>("test1", "hh" + i), new Callback() {
 				@Override
 				public void onCompletion(RecordMetadata metadata, Exception exception) {
@@ -45,9 +48,6 @@ public class CallBackProducer {
 				}
 			});
 		}
-
 		kafkaProducer.close();
-
 	}
-
 }

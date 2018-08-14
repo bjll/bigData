@@ -11,7 +11,7 @@ import java.util.Random;
 public class FlumeRpcApp {
 
 	public static void main(String[] args) {
-
+        //主机名   fulme 的端口
         RpcClient client = FlumeRPCClient.createClient("node1", 41414);
         Random _rand = new Random();
         //随机发送句子
