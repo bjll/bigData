@@ -95,7 +95,7 @@ public class HiveJDBC {
     // 加载数据
     @Test
     public void loadData() throws Exception {
-        String filePath = "/home/hadoop/data/emp.txt";
+        String filePath = "/soft/test/emp.txt";
         String sql = "load data local inpath '" + filePath + "' overwrite into table emp";
         System.out.println("Running: " + sql);
         stmt.execute(sql);
@@ -139,7 +139,6 @@ public class HiveJDBC {
         System.out.println("Running: " + sql);
         stmt.execute(sql);
     }
-
     // 释放资源
     @After
     public void destory() throws Exception {
