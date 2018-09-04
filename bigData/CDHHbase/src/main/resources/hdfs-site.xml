@@ -7,11 +7,11 @@
   </property>
   <property>
     <name>dfs.namenode.servicerpc-address</name>
-    <value>dsgcdh02:8022</value>
+    <value></value>
   </property>
   <property>
     <name>dfs.https.address</name>
-    <value>dsgcdh02:50470</value>
+    <value></value>
   </property>
   <property>
     <name>dfs.https.port</name>

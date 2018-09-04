@@ -3,7 +3,7 @@
 <configuration>
   <property>
     <name>hbase.rootdir</name>
-    <value>hdfs://dsgcdh02:8020/hbase</value>
+    <value></value>
   </property>
   <property>
     <name>hbase.client.write.buffer</name>

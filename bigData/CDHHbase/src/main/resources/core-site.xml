@@ -3,7 +3,7 @@
 <configuration>
   <property>
     <name>fs.defaultFS</name>
-    <value>hdfs://dsgcdh02:8020</value>
+    <value></value>
   </property>
   <property>
     <name>fs.trash.interval</name>
