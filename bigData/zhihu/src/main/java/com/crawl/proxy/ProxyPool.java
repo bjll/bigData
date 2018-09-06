@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.DelayQueue;
-import java.util.concurrent.PriorityBlockingQueue;
+
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import static com.crawl.core.util.Constants.TIME_INTERVAL;
