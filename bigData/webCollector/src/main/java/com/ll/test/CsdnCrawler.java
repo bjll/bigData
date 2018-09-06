@@ -41,12 +41,11 @@ public class CsdnCrawler extends BreadthCrawler {
 	        }
 	}
 	public static void main(String[] args) {
-		try {
+		/*try {
 			CsdnCrawler csdnCrawler = new CsdnCrawler("test", true);
 			csdnCrawler.start(3);//迭代次数
-			csdnCrawler.list.size();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 }
