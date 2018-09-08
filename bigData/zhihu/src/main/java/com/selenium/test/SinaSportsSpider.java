@@ -13,8 +13,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 /**
- * Created by lilin on 2018/3/6.
- * 这是浏览器没有关闭的版本 在后续可能会关闭浏览器不让其弹出来
+ * Created by lilin on 
+ * 这是浏览器关闭的版本
  */
 public class SinaSportsSpider implements Spider {
 	private final static String TARGET_URL = "http://sports.sina.com.cn/basketball/nba/";
