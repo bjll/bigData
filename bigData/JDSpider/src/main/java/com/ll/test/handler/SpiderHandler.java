@@ -30,6 +30,22 @@ public class SpiderHandler {
 	@Autowired
 	private TaoBaoService taoBaoService;//淘宝
 	private static final Logger logger = LoggerFactory.getLogger(SpiderHandler.class);
+	 //模拟不同的agent
+	private static String[] ua = {"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.87 Safari/537.36 OPR/37.0.2178.32",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2486.0 Safari/537.36 Edge/13.10586",
+            "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko",
+            "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/6.0)",
+            "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0)",
+            "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/4.0)",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 BIDUBrowser/8.3 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.80 Safari/537.36 Core/1.47.277.400 QQBrowser/9.4.7658.400",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 UBrowser/5.6.12150.8 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36 SE 2.X MetaSr 1.0",
+            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36 TheWorld 7",
+            };
     /**
      * 爬取京东的任务
      */
@@ -51,7 +67,7 @@ public class SpiderHandler {
 			params.put("page", i + "");
 			executorService.submit(new Runnable() {
 				public void run() {
-					spiderService.spiderData(SysConstant.BASE_URL, params);
+					spiderService.spiderData(SysConstant.BASE_URL, params,null);
 					countDownLatch.countDown();
 				}
 			});
@@ -106,5 +122,48 @@ public class SpiderHandler {
 		executorService.shutdown();// 关闭线程池 否则会一直占用资源
 		logger.info("爬虫结束....");
 		System.err.println("[用时:" + (startTime - System.currentTimeMillis()) + "ms]");
+	}
+	 /**
+     * 爬取京东的任务(不用浏览器的的的驱动 直接分析接口API)
+     */
+	public void spiderJDData() {
+		logger.info("爬虫开始....");
+		// 执行任务的开始时间
+		long startTime = System.currentTimeMillis();
+		// 使用现线程池提交任务
+		ExecutorService executorService = Executors.newFixedThreadPool(10);
+		// 引入countDownLatch进行线程同步，使主线程等待线程池的所有任务结束，便于计时
+		// CountDownLatch 里面的计数器是线程的个数
+		final CountDownLatch countDownLatch = new CountDownLatch(200);
+		//这个地址必须有否则获取不到内容
+		String refererUrl="https://search.jd.com/Search";//跳转的父页面的主机信息
+		Map<String,String> hearderMap=new HashMap<String,String>();//模拟请求的头部信息
+		hearderMap.put("referer", refererUrl);
+		//hearderMap.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
+		for (int i = 1; i <201; i++) {
+			int b=(int)(Math.random()*10);//产生0-10的整数随机数
+			// 设置URL 需要的参数
+			final Map<String, String> params = new HashMap<String, String>();
+			params.put("keyword", "男装");
+			params.put("enc", "utf-8");
+			params.put("wc", "男装");
+			params.put("page", i + "");
+			params.put("scrolling", "y");
+			hearderMap.put("user-agent", ua[b].toString());//设置不同的user-agent 模拟不同的浏览器请求
+			executorService.submit(new Runnable() {
+				public void run() {
+					spiderService.spiderData(SysConstant.BASE_URL, params,hearderMap);
+					countDownLatch.countDown();
+				}
+			});
+		}
+		try {
+			countDownLatch.await();// 唤醒主线程
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		executorService.shutdown();// 关闭线程池 否则会一直占用资源
+		logger.info("爬虫结束....");
+		System.err.println("[开始时间:" + (startTime - System.currentTimeMillis()) + "ms]");
 	}
 }

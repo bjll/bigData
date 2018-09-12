@@ -26,7 +26,7 @@ public class App {
     */
 	@PostConstruct
 	public void task() {
-		//spiderHandler.spiderData();
-		spiderHandler.spiderDataTaoBao();
+		spiderHandler.spiderJDData();
+		//spiderHandler.spiderDataTaoBao();
 	}
 }
