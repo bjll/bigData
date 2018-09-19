@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>webCollector</groupId>
 	<artifactId>webCollector</artifactId>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>webCollector Maven Webapp</name>
 	<url>http://maven.apache.org</url>
@@ -16,28 +16,56 @@
 		</dependency>
 		<!-- 增加json -->
 		<dependency>
-		    <groupId>com.alibaba</groupId>
-		    <artifactId>fastjson</artifactId>
-		    <version>1.2.21</version>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.21</version>
 		</dependency>
 		<!-- log4j -->
 		<dependency>
-            <groupId>org.slf4j</groupId>
+			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-            <version>1.7.19</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.19</version>
-        </dependency>
+			<version>1.7.19</version>
+		</dependency>
 		<dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.19</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+		<!-- oracle jar -->
+		<dependency>
+			<groupId>oracleJdbc</groupId>
+			<artifactId>dsg</artifactId>
+			<version>1.2.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/10.2.0.1.0oracle.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>webCollector</finalName>
+		 <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
 	</build>
 </project>
