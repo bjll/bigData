@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 import com.ll.test.handler.SpiderHandler;
+
 
 /**
  * 主启动类
@@ -14,6 +16,7 @@ import com.ll.test.handler.SpiderHandler;
  * @author Chris
  */
 @SpringBootApplication
+//注册动态多数据源
 public class App {
 	@Autowired
 	private SpiderHandler spiderHandler;
@@ -21,7 +24,7 @@ public class App {
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(App.class, args);
 	}
-   /**
+    /**
     * 在项目启动的时候就执行任务去抓取数据
     */
 	@PostConstruct

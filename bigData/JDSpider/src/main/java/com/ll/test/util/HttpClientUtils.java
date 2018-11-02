@@ -39,6 +39,8 @@ public class HttpClientUtils {
 
 	private final static String GET_METHOD = "GET";
 	private final static String POST_METHOD = "POST";
+	
+	//private final static CloseableHttpClient client = HttpClients.createDefault();
 
 	/**
 	 * GET请求

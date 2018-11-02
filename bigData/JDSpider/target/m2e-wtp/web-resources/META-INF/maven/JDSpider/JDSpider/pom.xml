@@ -44,6 +44,10 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
         <!-- httpclient -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -78,6 +82,14 @@
             <artifactId>selenium-java</artifactId>
             <version>${selenium.version}</version>
         </dependency>
+        <!-- 引入oracle 的jar包 -->
+        <dependency>
+	        <groupId>ojdbc14</groupId>  <!--自定义-->
+	        <artifactId>cloud</artifactId>    <!--自定义-->
+	        <version>1.0</version> <!--自定义-->
+	        <scope>system</scope> <!--system，类似provided，需要显式提供依赖的jar以后，Maven就不会在Repository中查找它-->
+	        <systemPath>${basedir}\src\main\webapp\lib\ojdbc14.jar</systemPath> <!--项目根目录下的lib文件夹下-->
+	    </dependency>
     </dependencies>
 
     <build>

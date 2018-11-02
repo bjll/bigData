@@ -131,24 +131,23 @@ public class SpiderHandler {
 		// 执行任务的开始时间
 		long startTime = System.currentTimeMillis();
 		// 使用现线程池提交任务
-		ExecutorService executorService = Executors.newFixedThreadPool(10);
+		ExecutorService executorService = Executors.newFixedThreadPool(5);
 		// 引入countDownLatch进行线程同步，使主线程等待线程池的所有任务结束，便于计时
 		// CountDownLatch 里面的计数器是线程的个数
 		final CountDownLatch countDownLatch = new CountDownLatch(200);
 		//这个地址必须有否则获取不到内容
-		String refererUrl="https://search.jd.com/Search";//跳转的父页面的主机信息
+		String refererUrl="https://search.jd.com/Search";//上一个页面的链接地址
 		Map<String,String> hearderMap=new HashMap<String,String>();//模拟请求的头部信息
 		hearderMap.put("referer", refererUrl);
-		//hearderMap.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
+	    // 设置URL 需要的参数
+		final Map<String, String> params = new HashMap<String, String>();
+		params.put("keyword", "男装");
+		params.put("enc", "utf-8");
+		params.put("wc", "男装");
+		params.put("scrolling", "y");
 		for (int i = 1; i <201; i++) {
 			int b=(int)(Math.random()*10);//产生0-10的整数随机数
-			// 设置URL 需要的参数
-			final Map<String, String> params = new HashMap<String, String>();
-			params.put("keyword", "男装");
-			params.put("enc", "utf-8");
-			params.put("wc", "男装");
 			params.put("page", i + "");
-			params.put("scrolling", "y");
 			hearderMap.put("user-agent", ua[b].toString());//设置不同的user-agent 模拟不同的浏览器请求
 			executorService.submit(new Runnable() {
 				public void run() {
