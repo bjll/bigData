@@ -35,13 +35,13 @@ public class CsdnCrawler extends BreadthCrawler {
 		
 		super(crawlPath, autoParse);
 		/* start page */
-		this.addSeed("https://blog.csdn.net/");// 添加种子地址
+		this.addSeed("https://item.jd.com/7437788.html");// 添加种子地址
 		/* fetch url like http://news.hfut.edu.cn/show-xxxxxxhtml */
-		this.addRegex("https://blog.csdn.net/.*/article/details/.*");
+		this.addRegex("https://item.jd.com/.*");
 		/* do not fetch jpg|png|gif */
 		this.addRegex("-.*\\.(jpg|png|gif).*");
 		// 设置的线程数
-		setThreads(3);
+		setThreads(20);
 		getConf().setTopN(10000);
 		getConf().setExecuteInterval(0);// 线程执行间隔
 	
@@ -51,24 +51,26 @@ public class CsdnCrawler extends BreadthCrawler {
 	 */
 	public void visit(Page page, CrawlDatums next) {
 		try {
+			System.err.println(page.url());
+			System.err.println(page.select("span[class=p-price]>span:nth-child(2)").first().text());
 			//这里可能出现 404 界面  还没有做处理
-			if (page.matchUrl("https://blog.csdn.net/.*/article/details/.*")) {
-				String url = page.url();// 文章地址
-				String title = page.select("h1[class=title-article]").first().text();// 标题
-				if(title.contains("'")||title.contains("‘")){
-					title=title.replaceAll("'", "");//防止标题中出现 '
-				}
-				String publish_time = page.select("div[class=article-info-box]").first().select("span[class=time]").first()
-						.text();// 发布时间
-				String read_count = page.select("div[class=article-info-box]").first().select("span[class=read-count]")
-						.first().text();// 发布
-				//linkedBlockingQueue.put((url + "\t" + title + "\t" + time + "\t" + read_count).toString());
-				if(read_count!=null&&!"".equals(read_count)){
-					read_count=read_count.split("[：]")[1];
-				}
-				System.err.println((url + "\t" + title + "\t" + publish_time + "\t" + read_count).toString());
-				csdnInfoQueen.put(new CsdnVo(title, url, publish_time, read_count));
-			}
+//			if (page.matchUrl("https://blog.csdn.net/.*/article/details/.*")) {
+//				String url = page.url();// 文章地址
+//				String title = page.select("h1[class=title-article]").first().text();// 标题
+//				if(title.contains("'")||title.contains("‘")){
+//					title=title.replaceAll("'", "");//防止标题中出现 '
+//				}
+//				String publish_time = page.select("div[class=article-info-box]").first().select("span[class=time]").first()
+//						.text();// 发布时间
+//				String read_count = page.select("div[class=article-info-box]").first().select("span[class=read-count]")
+//						.first().text();// 发布
+//				//linkedBlockingQueue.put((url + "\t" + title + "\t" + time + "\t" + read_count).toString());
+//				if(read_count!=null&&!"".equals(read_count)){
+//					read_count=read_count.split("[：]")[1];
+//				}
+//				System.err.println((url + "\t" + title + "\t" + publish_time + "\t" + read_count).toString());
+//				csdnInfoQueen.put(new CsdnVo(title, url, publish_time, read_count));
+//			}
 		} catch (Exception e) {
 			   System.err.println("error url::::"+page.url());
 			   e.printStackTrace();
@@ -77,17 +79,19 @@ public class CsdnCrawler extends BreadthCrawler {
 	}
 	public static void main(String[] args) {
 		try {
-			System.err.println(new Date());
 			/*File file = new File("E:\\test.txt");
 			out = new FileWriter(file);
 			CnsThread  cnsThread=new  CnsThread(linkedBlockingQueue,out);
 			cnsThread.start();*/
-			CnsThread  cnsThread=new  CnsThread(csdnInfoQueen);
+			/*CnsThread  cnsThread=new  CnsThread(csdnInfoQueen);
 			cnsThread.start();
 			CnsThread  cnsThread1=new  CnsThread(csdnInfoQueen);
-			cnsThread1.start();
+			cnsThread1.start();*/
 			CsdnCrawler csdnCrawler = new CsdnCrawler("test", true);
 			csdnCrawler.start(5);// 迭代次数
+			// 3 https://blog.csdn.net/
+			//4. https://blog.csdn.net/J_java1/article/details/83273782
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
